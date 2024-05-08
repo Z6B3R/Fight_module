@@ -22,6 +22,7 @@ struct player
         }
         std::cout << "__________________" << std::endl;
     }
+    //hp func list
     void hp_damage()
     {
         //получение урона
@@ -31,31 +32,32 @@ struct player
         //лечение
     }
 };
-void init_create_member(player &mem, std::vector<player> &fight) //возможно переработать
+//init func list
+void init_create_member(player &mem, std::vector<player> &party) //возможно переработать
 {
     std::string name; int hp = 0, ac = 0, ip = 0;
     int num = 0;
     std::cout << "Количество игроков: "; std::cin >> num;
     for (int x = 0; x < num; ++x)
     {
-        std::string tag = "human";
+        std::string tag = "Player";
         std::cout << "Введи имя персонажа: "; std::cin >> name;
         std::cout << "\nВведи хиты: "; std::cin >> hp;
         std::cout << "\nВведи очки брони: "; std::cin >> ac;
         std::cout << "\nВведи очки инициативы: "; std::cin >> ip;
         mem.set_stats(tag, name, hp, ac, ip);
-        fight.push_back(mem);
+        party.push_back(mem);
     }
     std::cout << "Введи количество противников: "; std::cin >> num;
     for (int x = 0; x < num; ++x)
     {
-        std::string tag = "npc";
+        std::string tag = "NPC";
         std::cout << "Введи имя противника: "; std::cin >> name;
         std::cout << "\nВведи хиты: "; std::cin >> hp;
         std::cout << "\nВведи очки брони: "; std::cin >> ac;
         std::cout << "\nВведи очки инициативы: "; std::cin >> ip;
         mem.set_stats(tag, name, hp, ac, ip);
-        fight.push_back(mem);
+        party.push_back(mem);
     }
 }
 bool init_sort_IP(std::vector<player> &party)
@@ -100,9 +102,11 @@ bool init_sort_IP(std::vector<player> &party)
     } while (check_sort == false);
     return true;
 }
-bool fight_stop(std::vector<player> &party)
+//battle func list
+bool battle_quit(std::vector<player>& party)
 {
- 
+    bool battle_end_flag = false;
+    
 }
 int main()
 {
@@ -112,5 +116,9 @@ int main()
     init_create_member(newmem, fight_party);
     init_sort_IP(fight_party);
     newmem.players_show_info(fight_party);
+    //start
+    while (!battle_quit)
+    {
 
+    }
 }
