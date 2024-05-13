@@ -2,6 +2,7 @@
 #include <vector>
 #include <iomanip>
 #include <algorithm>
+#include <string>
 struct player
 {
     std::string name, tag;
@@ -25,7 +26,14 @@ struct player
     //hp func list
     void hp_damage()
     {
-        //получение урона
+        auto damage = 0;
+        std::cout << "Полученный урон: "; std::cin >> damage;
+        HP =- damage;
+        if (HP <= 0)
+        {
+            std::cout << "Мёртв" << std::endl;
+            tag = "fell";
+        }
     }
     void hp_heal()
     {
@@ -103,11 +111,40 @@ bool init_sort_IP(std::vector<player> &party)
     return true;
 }
 //battle func list
-bool battle_quit(std::vector<player>& party)
+bool fight_end_check()
 {
-    bool battle_end_flag = false;
-    
+    return true;
 }
+void fight_question(std::vector<player> &party, int pos)
+{
+    int choice = -1;
+    std::cout << "1.Урон\n2.Лечение\n3.Пропуск\n>";
+    std::cin >> choice;
+    switch (choice)
+    {
+    case 1:
+    {
+        party[pos].hp_damage();
+        break;
+    }
+    case 2:
+    {
+        auto heal = 0;
+        std::cout << "Лечение: ";
+        std::cin >> heal;
+        party[pos].HP + heal;
+        auto hp_limit = party[pos].HP;
+        if (party[pos].HP > hp_limit)
+            party[pos].HP = hp_limit;
+        break;
+    }
+    case 3:
+    {
+        break;
+    }
+    }
+}
+//other
 int main()
 {
     setlocale(LC_ALL, "");
@@ -116,9 +153,16 @@ int main()
     init_create_member(newmem, fight_party);
     init_sort_IP(fight_party);
     newmem.players_show_info(fight_party);
-    //start
-    while (!battle_quit)
+    while(fight_end_check)
     {
-
+        for (int pos = 0; pos < fight_party.size();)
+        {
+            std::cout << "Ход игрока: " << fight_party[pos].name << std::endl;
+            if (fight_party[pos].tag == "fell")
+                std::cout << fight_party[pos].name << " пропускает ход" << std::endl;
+            else
+                fight_question(fight_party, pos);
+            ++pos;
+        }
     }
 }
