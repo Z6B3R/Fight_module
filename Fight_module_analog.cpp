@@ -7,7 +7,7 @@ struct player
 {
     std::string name, tag;
     int HP = -1, AC = -1, IP = -1;
-    void set_stats(std::string utag, std::string uname, int uhp, int uac, int uip)
+    void set_stats(std::string utag, std::string uname, int uhp, int uac, int uip) //???
     {
         name = uname;
         HP = uhp;
@@ -15,7 +15,7 @@ struct player
         IP = uip;
         tag = utag;
     }
-    void players_show_info(std::vector<player> &party)
+    void players_show_info(std::vector<player> &party) //???
     {
         for (int x = 0; x < party.size(); ++x)
         {
@@ -24,7 +24,7 @@ struct player
         std::cout << "__________________" << std::endl;
     }
     //hp func list
-    void hp_damage()
+    void hp_damage() //???
     {
         auto damage = 0;
         std::cout << "Полученный урон: "; std::cin >> damage;
@@ -35,13 +35,29 @@ struct player
             tag = "fell";
         }
     }
-    void hp_heal()
+    void hp_heal() //???
     {
-        //лечение
+        auto heal = 0;
+        std::cout << "Восстановлено: "; std::cin >> heal;
+        HP += heal;
+    }
+    bool battle_quit(std::vector<player>& party) //???
+    {
+        int check = 0;
+        for (int x = 0; x < party.size(); ++x)
+        {
+            if (party[x].tag == "fell")
+                ++check;
+        }
+        if (check > 0)
+        {
+            std::cout << "!";
+            return false;
+        }
     }
 };
 //init func list
-void init_create_member(player &mem, std::vector<player> &party) //возможно переработать
+void init_create_member(player &mem, std::vector<player> &party) //???
 {
     std::string name; int hp = 0, ac = 0, ip = 0;
     int num = 0;
@@ -82,7 +98,7 @@ bool init_sort_IP(std::vector<player> &party)
                 std::swap(party[x], party[x + 1]);
                 ++x;
             }
-            else if (party[x].IP == party[x + 1].IP && party[x].tag == "npc") //если числа одинаковы, чтобы первым ходил игрок
+            else if (party[x].IP == party[x + 1].IP && party[x].tag == "npc") //если числа одинаковы
             {
                 std::swap(party[x], party[x + 1]);
                 ++x;
@@ -111,10 +127,7 @@ bool init_sort_IP(std::vector<player> &party)
     return true;
 }
 //battle func list
-bool fight_end_check()
-{
-    return true;
-}
+
 void fight_question(std::vector<player> &party, int pos)
 {
     int choice = -1;
@@ -129,13 +142,7 @@ void fight_question(std::vector<player> &party, int pos)
     }
     case 2:
     {
-        auto heal = 0;
-        std::cout << "Лечение: ";
-        std::cin >> heal;
-        party[pos].HP + heal;
-        auto hp_limit = party[pos].HP;
-        if (party[pos].HP > hp_limit)
-            party[pos].HP = hp_limit;
+        party[pos].hp_heal();
         break;
     }
     case 3:
@@ -153,7 +160,7 @@ int main()
     init_create_member(newmem, fight_party);
     init_sort_IP(fight_party);
     newmem.players_show_info(fight_party);
-    while(fight_end_check)
+    while(newmem.battle_quit(fight_party))
     {
         for (int pos = 0; pos < fight_party.size();)
         {
